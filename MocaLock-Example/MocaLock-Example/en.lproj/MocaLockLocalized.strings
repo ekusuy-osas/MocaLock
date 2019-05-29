@@ -1,0 +1,13 @@
+// word
+"delete" = "Delete";
+"back" = "Back";
+"faceId" = "Face ID";
+"touchId" = "Touch ID";
+
+// message
+"enterRegisterPasswordMsg" = "Please enter a password to register.";
+"enterUnlockPasswordMsg" = "Please enter your password.";
+"enterPasswordAgainMsg" = "Please enter password again.";
+"passwordNotMatchMsg" = "Passwords do not match.";
+"passwordIncorrectMsg" = "Password is incorrect.";
+"authFailedMsg" = "Authentication failed.";
