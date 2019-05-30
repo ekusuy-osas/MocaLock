@@ -18,7 +18,6 @@ internal class CircleNumberButton: UIButton, NumberButton {
         // Fill Color
         fillColor?.setFill()
         oval.fill()
-        oval.stroke()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

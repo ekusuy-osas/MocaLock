@@ -32,17 +32,30 @@ public class MocaLockViewController: UIViewController {
     public var registerPassword: String?
     public weak var unlockDelegate: MocaLockUnlockDelegate?
     public weak var registerDelegate: MocaLockRegisterDelegate?
+    private(set) var mocaLockType: MocaLockType = .unlock
     private var mocaLockView: MocaLockView = MocaLockView(passwordCount: 4)
     private var goBackButton: UIButton = UIButton()
-    private(set) var mocaLockType: MocaLockType = .unlock
+    private var backgroundColor: UIColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
+    private var btnTextColor: UIColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+    private var btnBGColor: UIColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
     private let errorMessageColor = UIColor(red: 0.96, green: 0.34, blue: 0.21, alpha: 1.0)
-    private let textColor: UIColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-    private let btnBGColor: UIColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
     private let localizeTableName = "MocaLockLocalized"
     
-    public convenience init(MocaLockType: MocaLockType) {
+    public convenience init(mocaLockType: MocaLockType,
+                            backgroundColor argBGColor: UIColor? = nil,
+                            buttonTextColor argBtnTextColor: UIColor? = nil,
+                            buttonBGColor argBtnBGColor: UIColor? = nil) {
         self.init()
-        self.mocaLockType = MocaLockType
+        self.mocaLockType = mocaLockType
+        if let c = argBGColor {
+            self.backgroundColor = c
+        }
+        if let c = argBtnTextColor {
+            self.btnTextColor = c
+        }
+        if let c = argBtnBGColor {
+            self.btnBGColor = c
+        }
     }
     
     public override func loadView() {
@@ -63,7 +76,7 @@ public class MocaLockViewController: UIViewController {
         //////////
         // Init UI
         
-        view.backgroundColor = UIColor(red: 0.22, green: 0.22, blue: 0.22, alpha: 1.0)
+        view.backgroundColor = backgroundColor
         self.view.addSubview(mocaLockView)
         
         goBackButton.setTitle(NSLocalizedString("back", tableName: localizeTableName, comment: ""), for: .normal)
@@ -200,7 +213,7 @@ extension MocaLockViewController: MocaLockViewDataSource {
     public func mocaLockView(_ mocaLockView: MocaLockView, buttonForNumber number: UInt8) -> NumberButton {
         let button = CircleNumberButton()
         button.setTitle(String(format: "%d", number), for: .normal)
-        button.setTitleColor(textColor, for: .normal)
+        button.setTitleColor(btnTextColor, for: .normal)
         button.fillColor = btnBGColor
         button.number = number
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 24)
@@ -219,8 +232,8 @@ extension MocaLockViewController: MocaLockViewDataSource {
     public func deleteButton(_ mocaLockView: MocaLockView) -> UIButton {
         let button = UIButton()
         button.setTitle(NSLocalizedString("delete", tableName: localizeTableName, comment: ""), for: .normal)
-        button.setTitleColor(textColor, for: .normal)
-        button.setTitleColor(textColor.withAlphaComponent(0.6), for: .highlighted)
+        button.setTitleColor(btnTextColor, for: .normal)
+        button.setTitleColor(btnTextColor.withAlphaComponent(0.6), for: .highlighted)
         button.backgroundColor = .clear
         return button
     }
@@ -234,15 +247,15 @@ extension MocaLockViewController: MocaLockViewDataSource {
             case .faceID:
                 let button = UIButton()
                 button.setTitle(NSLocalizedString("faceId", tableName: localizeTableName, comment: ""), for: .normal)
-                button.setTitleColor(textColor, for: .normal)
-                button.setTitleColor(textColor.withAlphaComponent(0.6), for: .highlighted)
+                button.setTitleColor(btnTextColor, for: .normal)
+                button.setTitleColor(btnTextColor.withAlphaComponent(0.6), for: .highlighted)
                 button.backgroundColor = .clear
                 return button
             case .touchID:
                 let button = UIButton()
                 button.setTitle(NSLocalizedString("touchId", tableName: localizeTableName, comment: ""), for: .normal)
-                button.setTitleColor(textColor, for: .normal)
-                button.setTitleColor(textColor.withAlphaComponent(0.6), for: .highlighted)
+                button.setTitleColor(btnTextColor, for: .normal)
+                button.setTitleColor(btnTextColor.withAlphaComponent(0.6), for: .highlighted)
                 button.backgroundColor = .clear
                 return button
             default:
