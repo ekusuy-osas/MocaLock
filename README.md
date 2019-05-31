@@ -60,3 +60,9 @@ To change the wording in MocaLockViewController, add MocaLockLocalized.strings t
 "authFailedMsg" = "Authentication failed.";
 ```
 
+
+
+If you want more customization, add MocaLockView to your ViewController and set MocaLockViewDataSource and MocaLockViewDelegate to MocaLockView.
+
+MocaLockViewDataSource is responsible for generating UI components.
+MocaLockViewDelegate is responsible for action callback on MocaLockView
