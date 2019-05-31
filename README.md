@@ -11,7 +11,13 @@ This is a library for displaying password lock screen. It also supports biometri
 
 ## Installation
 
-coming soon...
+- CocoaPods
+
+  ```:Podfile
+  pod 'MocaLock'
+  ```
+
+  
 
 ## Usage
 
