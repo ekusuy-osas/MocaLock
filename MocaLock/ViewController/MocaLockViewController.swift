@@ -32,9 +32,9 @@ public class MocaLockViewController: UIViewController {
     public var registerPassword: String?
     public weak var unlockDelegate: MocaLockUnlockDelegate?
     public weak var registerDelegate: MocaLockRegisterDelegate?
-    private(set) var mocaLockType: MocaLockType = .unlock
-    private var mocaLockView: MocaLockView = MocaLockView(passwordCount: 4)
-    private var goBackButton: UIButton = UIButton()
+    public private(set) var mocaLockType: MocaLockType = .unlock
+    public private(set) var mocaLockView: MocaLockView = MocaLockView(passwordCount: 4)
+    public private(set) var goBackButton: UIButton = UIButton()
     private var backgroundColor: UIColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
     private var btnTextColor: UIColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
     private var btnBGColor: UIColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
