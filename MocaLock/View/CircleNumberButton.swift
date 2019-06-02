@@ -22,6 +22,7 @@ internal class CircleNumberButton: UIButton, NumberButton {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
+        print("touchesBegan")
         touchStartAnimation()
     }
     
@@ -38,7 +39,7 @@ internal class CircleNumberButton: UIButton, NumberButton {
     private func touchStartAnimation(){
         UIView.animate(withDuration: 0.12,
                        delay: 0.0,
-                       options: .curveEaseIn,
+                       options: [.curveEaseIn, .allowUserInteraction],
                        animations: {() -> Void in
                         self.alpha = 0.4
         }, completion: nil)
@@ -47,7 +48,7 @@ internal class CircleNumberButton: UIButton, NumberButton {
     private func touchEndAnimation(){
         UIView.animate(withDuration: 0.12,
                        delay: 0.0,
-                       options: .curveEaseIn,
+                       options: [.curveEaseIn, .allowUserInteraction],
                        animations: {() -> Void in
                         self.alpha = 1.0
         }, completion: nil)
