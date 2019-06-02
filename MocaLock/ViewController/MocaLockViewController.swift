@@ -203,6 +203,15 @@ extension MocaLockViewController: MocaLockViewDelegate {
                     print("bio auth failed.")
                 }
             })
+        } else {
+            // invalid bioAuth
+            self.mocaLockView.messageLabel.text = NSLocalizedString("bioAuthDisabledMsg", tableName: self.localizeTableName, comment: "")
+            // shake
+            self.mocaLockView.isUserInteractionEnabled = false
+            self.shakeAnimation(view: mocaLockView, completion: { finished in
+                self.mocaLockView.isUserInteractionEnabled = true
+                self.mocaLockView.clearPassword()
+            })
         }
         if let er = error {
             print(er)
