@@ -11,3 +11,5 @@
 "passwordNotMatchMsg" = "パスワードが一致しません";
 "passwordIncorrectMsg" = "パスワードが違います";
 "authFailedMsg" = "認証に失敗しました";
+
+"passwordLockReason" = "アプリのロックを解除します";

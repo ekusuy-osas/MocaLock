@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name         = "MocaLock"
-  spec.version      = "0.1.1"
+  spec.version      = "0.1.2"
   spec.swift_version = '5.0'
   spec.ios.deployment_target = '11.0'
   spec.summary      = "It is a library for displaying the password lock screen in the iOS application."

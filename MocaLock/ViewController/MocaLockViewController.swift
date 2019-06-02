@@ -178,7 +178,8 @@ extension MocaLockViewController: MocaLockViewDelegate {
         let context = LAContext()
         var error: NSError?
         if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
-            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: description, reply: {success, evaluateError in
+            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: NSLocalizedString("passwordLockReason", tableName: localizeTableName, comment: ""),
+                reply: {success, evaluateError in
                 if (success) {
                     // auth success.
                     print("bio auth success.")

@@ -11,3 +11,5 @@
 "passwordNotMatchMsg" = "Passwords do not match.";
 "passwordIncorrectMsg" = "Password is incorrect.";
 "authFailedMsg" = "Authentication failed.";
+
+"passwordLockReason" = "App unlock.";
