@@ -15,6 +15,7 @@
 		708F0A21229EA60200719099 /* MocaLockLocalized.strings in Resources */ = {isa = PBXBuildFile; fileRef = 708F0A23229EA60200719099 /* MocaLockLocalized.strings */; };
 		708F0A28229EC4C200719099 /* MocaLock.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 708F0A27229EC4C200719099 /* MocaLock.framework */; };
 		708F0A29229EC4C200719099 /* MocaLock.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 708F0A27229EC4C200719099 /* MocaLock.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		70974F9522AB5BF900338EB0 /* MyLockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70974F9422AB5BF900338EB0 /* MyLockViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -42,6 +43,7 @@
 		708F0A22229EA60200719099 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MocaLockLocalized.strings; sourceTree = "<group>"; };
 		708F0A24229EA60300719099 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/MocaLockLocalized.strings; sourceTree = "<group>"; };
 		708F0A27229EC4C200719099 /* MocaLock.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MocaLock.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		70974F9422AB5BF900338EB0 /* MyLockViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLockViewController.swift; sourceTree = "<group>"; };
 		70A570C0229DF39C009387D0 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Main.strings; sourceTree = "<group>"; };
 		70A570C1229DF39C009387D0 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -85,6 +87,7 @@
 				70555264229C05DC0086728F /* LaunchScreen.storyboard */,
 				70555267229C05DC0086728F /* Info.plist */,
 				708F0A23229EA60200719099 /* MocaLockLocalized.strings */,
+				70974F9422AB5BF900338EB0 /* MyLockViewController.swift */,
 			);
 			path = "MocaLock-Example";
 			sourceTree = "<group>";
@@ -166,6 +169,7 @@
 			files = (
 				7055525E229C05DB0086728F /* ViewController.swift in Sources */,
 				7055525C229C05DB0086728F /* AppDelegate.swift in Sources */,
+				70974F9522AB5BF900338EB0 /* MyLockViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

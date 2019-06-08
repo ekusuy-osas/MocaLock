@@ -25,7 +25,7 @@ public protocol MocaLockViewDataSource: class {
 
 
 /// MocaLockView is responsible for UI layout, and completion of password input.
-public class MocaLockView: UIView {
+open class MocaLockView: UIView {
    
     // MARK: - Variable
     

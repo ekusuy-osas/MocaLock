@@ -66,6 +66,7 @@ To change the wording in MocaLockViewController, add MocaLockLocalized.strings t
 "passwordNotMatchMsg" = "Passwords do not match.";
 "passwordIncorrectMsg" = "Password is incorrect.";
 "authFailedMsg" = "Authentication failed.";
+"bioAuthDisabledMsg" = "Bio auth is disabled.";
 
 "passwordLockReason" = "App unlock.";
 ```

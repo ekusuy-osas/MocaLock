@@ -21,7 +21,7 @@ public protocol MocaLockRegisterDelegate: class {
 
 /// This role is Views design, Password validation.
 /// When using a FaceID, append [Privacy - Face ID Usage Description] to Info.plist .
-public class MocaLockViewController: UIViewController {
+open class MocaLockViewController: UIViewController, MocaLockViewDataSource, MocaLockViewDelegate {
     
     public enum MocaLockType {
         case unlock
@@ -58,7 +58,7 @@ public class MocaLockViewController: UIViewController {
         }
     }
     
-    public override func loadView() {
+    open override func loadView() {
         super.loadView()
         
         mocaLockView.delegate = self
@@ -123,10 +123,72 @@ public class MocaLockViewController: UIViewController {
     @objc func touchUpGoBack(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
     }
-}
-
-extension MocaLockViewController: MocaLockViewDelegate {
-    public func mocaLockView(_ mocaLockView: MocaLockView, didCompletePassword password: String) {
+    
+    // MARK: - MocaLockViewDataSource
+    
+    open func mocaLockView(_ mocaLockView: MocaLockView, buttonForNumber number: UInt8) -> NumberButton {
+        let button = CircleNumberButton()
+        button.setTitle(String(format: "%d", number), for: .normal)
+        button.setTitleColor(btnTextColor, for: .normal)
+        button.fillColor = btnBGColor
+        button.number = number
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 24)
+        return button
+    }
+    
+    open func mocaLockView(_ mocaLockView: MocaLockView, inputSignViewForCount count: UInt8) -> InputSignView {
+        let view = PointSignView()
+        view.frame = CGRect(x: 0, y: 0, width: 18, height: 18)
+        view.fillColor = .white
+        view.lineColor = .white
+        view.backgroundColor = .clear
+        return view
+    }
+    
+    open func deleteButton(_ mocaLockView: MocaLockView) -> UIButton {
+        let button = UIButton()
+        button.setTitle(NSLocalizedString("delete", tableName: localizeTableName, comment: ""), for: .normal)
+        button.setTitleColor(btnTextColor, for: .normal)
+        button.setTitleColor(btnTextColor.withAlphaComponent(0.6), for: .highlighted)
+        button.backgroundColor = .clear
+        return button
+    }
+    
+    open func bioAuthButton(_ mocaLockView: MocaLockView) -> UIButton {
+        var error: NSError?
+        let lacontext = LAContext()
+        if mocaLockType == .unlock &&
+            lacontext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+            switch lacontext.biometryType {
+            case .faceID:
+                let button = UIButton()
+                button.setTitle(NSLocalizedString("faceId", tableName: localizeTableName, comment: ""), for: .normal)
+                button.setTitleColor(btnTextColor, for: .normal)
+                button.setTitleColor(btnTextColor.withAlphaComponent(0.6), for: .highlighted)
+                button.backgroundColor = .clear
+                return button
+            case .touchID:
+                let button = UIButton()
+                button.setTitle(NSLocalizedString("touchId", tableName: localizeTableName, comment: ""), for: .normal)
+                button.setTitleColor(btnTextColor, for: .normal)
+                button.setTitleColor(btnTextColor.withAlphaComponent(0.6), for: .highlighted)
+                button.backgroundColor = .clear
+                return button
+            default:
+                break
+            }
+        }
+        if let er = error {
+            print(er)
+        }
+        let button = UIButton()
+        button.isEnabled = false
+        return button
+    }
+    
+    // MARK: - MocaLockViewDelegate
+    
+    open func mocaLockView(_ mocaLockView: MocaLockView, didCompletePassword password: String) {
         switch mocaLockType {
         case .unlock:
             // number password validation.
@@ -173,35 +235,35 @@ extension MocaLockViewController: MocaLockViewDelegate {
         }
     }
     
-    public func didTouchUpBioAuth(_ mocaLockView: MocaLockView) {
+    open func didTouchUpBioAuth(_ mocaLockView: MocaLockView) {
         // biometric validation.
         let context = LAContext()
         var error: NSError?
         if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
             context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: NSLocalizedString("passwordLockReason", tableName: localizeTableName, comment: ""),
-                reply: {success, evaluateError in
-                if (success) {
-                    // auth success.
-                    print("bio auth success.")
-                    DispatchQueue.main.async {
-                        self.mocaLockView.messageLabel.text = ""
-                        self.dismiss(animated: true, completion: nil)
-                        self.unlockDelegate?.correctPassword()
-                    }
-                } else {
-                    // auth failed.
-                    DispatchQueue.main.async {
-                        self.mocaLockView.messageLabel.text = NSLocalizedString("authFailedMsg", tableName: self.localizeTableName, comment: "")
-                        self.mocaLockView.messageLabel.textColor = self.errorMessageColor
-                        // shake
-                        self.mocaLockView.isUserInteractionEnabled = false
-                        self.shakeAnimation(view: mocaLockView, completion: { finished in
-                            self.mocaLockView.isUserInteractionEnabled = true
-                            self.mocaLockView.clearPassword()
-                        })
-                    }
-                    print("bio auth failed.")
-                }
+                                   reply: {success, evaluateError in
+                                    if (success) {
+                                        // auth success.
+                                        print("bio auth success.")
+                                        DispatchQueue.main.async {
+                                            self.mocaLockView.messageLabel.text = ""
+                                            self.dismiss(animated: true, completion: nil)
+                                            self.unlockDelegate?.correctPassword()
+                                        }
+                                    } else {
+                                        // auth failed.
+                                        DispatchQueue.main.async {
+                                            self.mocaLockView.messageLabel.text = NSLocalizedString("authFailedMsg", tableName: self.localizeTableName, comment: "")
+                                            self.mocaLockView.messageLabel.textColor = self.errorMessageColor
+                                            // shake
+                                            self.mocaLockView.isUserInteractionEnabled = false
+                                            self.shakeAnimation(view: mocaLockView, completion: { finished in
+                                                self.mocaLockView.isUserInteractionEnabled = true
+                                                self.mocaLockView.clearPassword()
+                                            })
+                                        }
+                                        print("bio auth failed.")
+                                    }
             })
         } else {
             // invalid bioAuth
@@ -219,64 +281,4 @@ extension MocaLockViewController: MocaLockViewDelegate {
     }
 }
 
-extension MocaLockViewController: MocaLockViewDataSource {
-    public func mocaLockView(_ mocaLockView: MocaLockView, buttonForNumber number: UInt8) -> NumberButton {
-        let button = CircleNumberButton()
-        button.setTitle(String(format: "%d", number), for: .normal)
-        button.setTitleColor(btnTextColor, for: .normal)
-        button.fillColor = btnBGColor
-        button.number = number
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 24)
-        return button
-    }
-    
-    public func mocaLockView(_ mocaLockView: MocaLockView, inputSignViewForCount count: UInt8) -> InputSignView {
-        let view = PointSignView()
-        view.frame = CGRect(x: 0, y: 0, width: 18, height: 18)
-        view.fillColor = .white
-        view.lineColor = .white
-        view.backgroundColor = .clear
-        return view
-    }
-    
-    public func deleteButton(_ mocaLockView: MocaLockView) -> UIButton {
-        let button = UIButton()
-        button.setTitle(NSLocalizedString("delete", tableName: localizeTableName, comment: ""), for: .normal)
-        button.setTitleColor(btnTextColor, for: .normal)
-        button.setTitleColor(btnTextColor.withAlphaComponent(0.6), for: .highlighted)
-        button.backgroundColor = .clear
-        return button
-    }
-    
-    public func bioAuthButton(_ mocaLockView: MocaLockView) -> UIButton {
-        var error: NSError?
-        let lacontext = LAContext()
-        if mocaLockType == .unlock &&
-            lacontext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
-            switch lacontext.biometryType {
-            case .faceID:
-                let button = UIButton()
-                button.setTitle(NSLocalizedString("faceId", tableName: localizeTableName, comment: ""), for: .normal)
-                button.setTitleColor(btnTextColor, for: .normal)
-                button.setTitleColor(btnTextColor.withAlphaComponent(0.6), for: .highlighted)
-                button.backgroundColor = .clear
-                return button
-            case .touchID:
-                let button = UIButton()
-                button.setTitle(NSLocalizedString("touchId", tableName: localizeTableName, comment: ""), for: .normal)
-                button.setTitleColor(btnTextColor, for: .normal)
-                button.setTitleColor(btnTextColor.withAlphaComponent(0.6), for: .highlighted)
-                button.backgroundColor = .clear
-                return button
-            default:
-                break
-            }
-        }
-        if let er = error {
-            print(er)
-        }
-        let button = UIButton()
-        button.isEnabled = false
-        return button
-    }
-}
+
