@@ -39,6 +39,8 @@ class ViewController: UIViewController {
         vc.unlockDelegate = self
         vc.unlockPassword = UserDefaults.standard.string(forKey: passwordKey)
         self.present(vc, animated: true, completion: nil)
+        // start Bio Auth
+        vc.startBioAuth()
     }
 }
 

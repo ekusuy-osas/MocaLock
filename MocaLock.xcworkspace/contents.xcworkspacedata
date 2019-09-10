@@ -5,6 +5,6 @@
       location = "group:MocaLock-Example/MocaLock-Example.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:/Users/yusuke/workspace/21_XcodeProjects/MocaLock/MocaLock.xcodeproj">
+      location = "group:MocaLock-Example/../MocaLock.xcodeproj">
    </FileRef>
 </Workspace>

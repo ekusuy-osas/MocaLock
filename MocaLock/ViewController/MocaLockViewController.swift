@@ -99,6 +99,52 @@ open class MocaLockViewController: UIViewController, MocaLockViewDataSource, Moc
         goBackButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 4).isActive = true
     }
     
+    
+    /// start Bio Auth
+    public func startBioAuth() {
+        let context = LAContext()
+        var error: NSError?
+        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: NSLocalizedString("passwordLockReason", tableName: localizeTableName, comment: ""),
+                                   reply: {success, evaluateError in
+                                    if (success) {
+                                        // auth success.
+                                        print("bio auth success.")
+                                        DispatchQueue.main.async {
+                                            self.mocaLockView.messageLabel.text = ""
+                                            self.dismiss(animated: true, completion: nil)
+                                            self.unlockDelegate?.correctPassword()
+                                        }
+                                    } else {
+                                        // auth failed.
+                                        DispatchQueue.main.async {
+                                            self.mocaLockView.messageLabel.text = NSLocalizedString("authFailedMsg", tableName: self.localizeTableName, comment: "")
+                                            self.mocaLockView.messageLabel.textColor = self.errorMessageColor
+                                            // shake
+                                            self.mocaLockView.isUserInteractionEnabled = false
+                                            self.shakeAnimation(view: self.mocaLockView, completion: { finished in
+                                                self.mocaLockView.isUserInteractionEnabled = true
+                                                self.mocaLockView.clearPassword()
+                                            })
+                                        }
+                                        print("bio auth failed.")
+                                    }
+            })
+        } else {
+            // invalid bioAuth
+            self.mocaLockView.messageLabel.text = NSLocalizedString("bioAuthDisabledMsg", tableName: self.localizeTableName, comment: "")
+            // shake
+            self.mocaLockView.isUserInteractionEnabled = false
+            self.shakeAnimation(view: mocaLockView, completion: { finished in
+                self.mocaLockView.isUserInteractionEnabled = true
+                self.mocaLockView.clearPassword()
+            })
+        }
+        if let er = error {
+            print(er)
+        }
+    }
+    
     private func shakeAnimation(view: UIView, completion: ((Bool) -> Swift.Void)? = nil) {
         AudioServicesPlaySystemSound(1102)
         UIView.animateKeyframes(withDuration: 0.2, delay: 0.0, animations: {
@@ -236,48 +282,7 @@ open class MocaLockViewController: UIViewController, MocaLockViewDataSource, Moc
     }
     
     open func didTouchUpBioAuth(_ mocaLockView: MocaLockView) {
-        // biometric validation.
-        let context = LAContext()
-        var error: NSError?
-        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
-            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: NSLocalizedString("passwordLockReason", tableName: localizeTableName, comment: ""),
-                                   reply: {success, evaluateError in
-                                    if (success) {
-                                        // auth success.
-                                        print("bio auth success.")
-                                        DispatchQueue.main.async {
-                                            self.mocaLockView.messageLabel.text = ""
-                                            self.dismiss(animated: true, completion: nil)
-                                            self.unlockDelegate?.correctPassword()
-                                        }
-                                    } else {
-                                        // auth failed.
-                                        DispatchQueue.main.async {
-                                            self.mocaLockView.messageLabel.text = NSLocalizedString("authFailedMsg", tableName: self.localizeTableName, comment: "")
-                                            self.mocaLockView.messageLabel.textColor = self.errorMessageColor
-                                            // shake
-                                            self.mocaLockView.isUserInteractionEnabled = false
-                                            self.shakeAnimation(view: mocaLockView, completion: { finished in
-                                                self.mocaLockView.isUserInteractionEnabled = true
-                                                self.mocaLockView.clearPassword()
-                                            })
-                                        }
-                                        print("bio auth failed.")
-                                    }
-            })
-        } else {
-            // invalid bioAuth
-            self.mocaLockView.messageLabel.text = NSLocalizedString("bioAuthDisabledMsg", tableName: self.localizeTableName, comment: "")
-            // shake
-            self.mocaLockView.isUserInteractionEnabled = false
-            self.shakeAnimation(view: mocaLockView, completion: { finished in
-                self.mocaLockView.isUserInteractionEnabled = true
-                self.mocaLockView.clearPassword()
-            })
-        }
-        if let er = error {
-            print(er)
-        }
+        startBioAuth()
     }
 }
 

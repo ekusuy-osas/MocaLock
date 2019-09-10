@@ -51,6 +51,9 @@ open class MocaLockView: UIView {
     private let winSize = UIScreen.main.bounds.size
     private let keyPadMargin: CGFloat = 24
     
+    private let maxHeight: CGFloat = 640
+    private let maxWidth: CGFloat = 320
+    
     public convenience init(passwordCount: UInt8) {
         self.init()
         setup()
@@ -134,6 +137,13 @@ open class MocaLockView: UIView {
         contentsVertStackView.alignment = .fill
         contentsVertStackView.spacing = keyPadMargin
         self.addSubview(contentsVertStackView)
+        
+        contentsVertStackView.translatesAutoresizingMaskIntoConstraints = false
+        contentsVertStackView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        contentsVertStackView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        contentsVertStackView.widthAnchor.constraint(lessThanOrEqualToConstant: maxWidth).isActive = true
+        contentsVertStackView.heightAnchor.constraint(lessThanOrEqualToConstant: maxHeight).isActive = true
+        
         ////////////////////
         // MARK: - set layout
         
